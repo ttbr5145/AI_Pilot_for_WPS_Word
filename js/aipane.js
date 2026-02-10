@@ -150,41 +150,25 @@ function clearChat() {
 // 保存AI回复到素材库
 async function saveToMaterials(content) {
     try {
-        console.log('开始保存到素材库，内容:', content.substring(0, 50) + '...');
-        
-        // 获取现有素材
         const materials = await getMaterials();
-        console.log('获取到现有素材数量:', materials.length);
-        
-        // 创建新素材
         const newMaterial = {
             id: Date.now(),
             content: content,
             createTime: new Date().toLocaleString(),
             source: 'AI对话'
         };
-        
-        // 添加到素材数组开头
         materials.unshift(newMaterial);
-        console.log('新素材已添加，总数量:', materials.length);
-        
-        // 保存到存储
-        const materialsStr = JSON.stringify(materials);
-        
-        // 同时保存到localStorage和PluginStorage
-        localStorage.setItem('materials', materialsStr);
-        console.log('已保存到localStorage');
-        
+
         if (window.Application && window.Application.PluginStorage) {
-            window.Application.PluginStorage.setItem('materials', materialsStr);
-            console.log('已保存到PluginStorage');
+            window.Application.PluginStorage.setItem('materials', JSON.stringify(materials));
+        } else {
+            localStorage.setItem('materials', JSON.stringify(materials));
         }
-        
-        console.log('素材保存成功!');
+
         alert('已保存到素材库！');
     } catch (error) {
         console.error('保存到素材库失败:', error);
-        alert('保存失败，请重试\n错误信息: ' + error.message);
+        alert('保存失败，请重试');
     }
 }
 
@@ -373,31 +357,15 @@ document.addEventListener('DOMContentLoaded', function() {
 function getMaterials() {
     return new Promise((resolve, reject) => {
         try {
-            console.log('开始获取素材库数据...');
-            
             // 优先从localStorage读取（WPS调试模式下也能持久化）
             let materialsStr = localStorage.getItem('materials');
-            console.log('从localStorage获取到的数据长度:', materialsStr ? materialsStr.length : 0);
-            
+
             // 如果localStorage没有，再尝试从PluginStorage读取
             if (!materialsStr && window.Application && window.Application.PluginStorage) {
                 materialsStr = window.Application.PluginStorage.getItem('materials');
-                console.log('从PluginStorage获取到的数据长度:', materialsStr ? materialsStr.length : 0);
             }
-            
-            let materials = [];
-            if (materialsStr) {
-                try {
-                    materials = JSON.parse(materialsStr);
-                    console.log('解析后的素材数量:', materials.length);
-                } catch (parseError) {
-                    console.error('JSON解析失败:', parseError);
-                    materials = [];
-                }
-            }
-            
-            console.log('最终返回素材数量:', materials.length);
-            resolve(materials);
+
+            resolve(materialsStr ? JSON.parse(materialsStr) : []);
         } catch (error) {
             console.error('获取素材库失败:', error);
             reject(error);

@@ -60,13 +60,13 @@ function GetImage(control) {
     const eleId = control.Id
     switch (eleId) {
         case "btnShowAIPane":
-            // AI对话功能 - 使用聊天对话图标（chat_v2.svg）
-            // 图标含义：对话交流、AI聊天，完美匹配AI对话功能
-            return "images/chat_v2.svg"
+            // AI助手功能 - 使用编辑文字图标（1.svg）
+            // 图标含义：AI全文润色、智能编辑，体现AI助手的核心能力
+            return "images/1.svg"
         case "btnShowMaterialPane":
-            // 素材库功能 - 使用创意灯泡图标（idea.svg）
-            // 图标含义：创意灵感、素材收集，完美匹配素材库功能
-            return "images/idea.svg"
+            // 写作模式功能 - 使用艺术字大小图标（2.svg）
+            // 图标含义：文字处理、写作辅助，体现素材库的写作支持功能
+            return "images/2.svg"
         default:
             // 默认图标 - 新建模板图标
             return "images/newFromTemp.svg"

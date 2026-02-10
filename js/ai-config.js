@@ -7,7 +7,7 @@ const AI_CONFIG = {
         // apiKey: 'sk-dc45668c412f4f15b6a68e5321e60371', // DeepSeek API Key
         apiKey: 'sk-R1tghSidlCjMxKBXfA7jsKeNlSOvBz6sNrSfDjw8xEdaFrTU', // ChatAnywhere API Key
         baseURL: 'https://api.chatanywhere.tech/v1',
-        model: 'gpt-5-nano',  // 更改为GPT 5-nano作为默认模型
+        model: 'gpt-5.1-2025-11-13',
         temperature: 0.7,
         maxTokens: 2000
     }

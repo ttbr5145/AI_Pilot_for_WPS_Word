@@ -3,4 +3,11 @@
   <ApiVersion>1.0.0</ApiVersion>
   <Name>AI Pilot for WPS Word</Name>
   <Description>AI助手插件，提供AI对话和素材库管理功能</Description>
+  <EntryPoints>
+    <EntryPoint>
+      <Type>TaskPaneApp</Type>
+      <SourceLocation>http://localhost:3890/index.html</SourceLocation>
+    </EntryPoint>
+  </EntryPoints>
+  <Permissions>ReadWriteDocument</Permissions>
 </JsPlugin>
