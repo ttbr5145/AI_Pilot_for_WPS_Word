@@ -1,8 +1,8 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <JsPlugin>
   <ApiVersion>1.0.0</ApiVersion>
   <Name>AI Pilot for WPS Word</Name>
-  <Description>AI助手插件，提供AI对话和素材库管理功能</Description>
+  <Description>AI鍔╂墜鎻掍欢锛屾彁渚汚I瀵硅瘽鍜岀礌鏉愬簱绠＄悊鍔熻兘</Description>
   <EntryPoints>
     <EntryPoint>
       <Type>TaskPaneApp</Type>
