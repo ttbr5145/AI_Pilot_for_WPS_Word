@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <JsPlugin>
   <ApiVersion>1.0.0</ApiVersion>
-  <Name>HelloWps</Name>
-  <Description>addon Description</Description>
+  <Name>AI Pilot for WPS Word</Name>
+  <Description>AI助手插件，提供AI对话和素材库管理功能</Description>
 </JsPlugin>

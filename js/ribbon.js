@@ -1,152 +1,85 @@
-
 //这个函数在整个wps加载项中是第一个执行的
 function OnAddinLoad(ribbonUI){
     if (typeof (window.Application.ribbonUI) != "object"){
 		window.Application.ribbonUI = ribbonUI
     }
-    
+
     if (typeof (window.Application.Enum) != "object") { // 如果没有内置枚举值
         window.Application.Enum = WPS_Enum
     }
 
-    window.Application.PluginStorage.setItem("EnableFlag", false) //往PluginStorage中设置一个标记，用于控制两个按钮的置灰
-    window.Application.PluginStorage.setItem("ApiEventFlag", false) //往PluginStorage中设置一个标记，用于控制ApiEvent的按钮label
+    // 初始化侧边栏状态
+    window.Application.PluginStorage.setItem("AIPaneFlag", false)
+    window.Application.PluginStorage.setItem("MaterialPaneFlag", false)
     return true
 }
 
-var WebNotifycount = 0;
 function OnAction(control) {
     const eleId = control.Id
     switch (eleId) {
-        case "btnShowMsg":
+        case "btnShowAIPane":
             {
-                const doc = window.Application.ActiveDocument
-                if (!doc) {
-                    alert("当前没有打开任何文档")
-                    return
-                }
-                alert(doc.Name)
-            }
-            break;
-        case "btnIsEnbable":
-            {
-                let bFlag = window.Application.PluginStorage.getItem("EnableFlag")
-                window.Application.PluginStorage.setItem("EnableFlag", !bFlag)
-                
-                //通知wps刷新以下几个按饰的状态
-                window.Application.ribbonUI.InvalidateControl("btnIsEnbable")
-                window.Application.ribbonUI.InvalidateControl("btnShowDialog") 
-                window.Application.ribbonUI.InvalidateControl("btnShowTaskPane") 
-                //window.Application.ribbonUI.Invalidate(); 这行代码打开则是刷新所有的按钮状态
-                break
-            }
-        case "btnShowDialog":
-            window.Application.ShowDialog(GetUrlPath() + "/ui/dialog.html", "这是一个对话框网页", 400 * window.devicePixelRatio, 400 * window.devicePixelRatio, false)
-            break
-        case "btnShowTaskPane":
-            {
-                let tsId = window.Application.PluginStorage.getItem("taskpane_id")
+                let tsId = window.Application.PluginStorage.getItem("aipane_id")
                 if (!tsId) {
-                    let tskpane = window.Application.CreateTaskPane(GetUrlPath() + "/ui/taskpane.html")
+                    let tskpane = window.Application.CreateTaskPane(GetUrlPath() + "/ui/aipane.html")
                     let id = tskpane.ID
-                    window.Application.PluginStorage.setItem("taskpane_id", id)
+                    window.Application.PluginStorage.setItem("aipane_id", id)
                     tskpane.Visible = true
+                    window.Application.PluginStorage.setItem("AIPaneFlag", true)
                 } else {
                     let tskpane = window.Application.GetTaskPane(tsId)
                     tskpane.Visible = !tskpane.Visible
+                    window.Application.PluginStorage.setItem("AIPaneFlag", tskpane.Visible)
                 }
+                break
             }
-            break
-        case "btnApiEvent":
+        case "btnShowMaterialPane":
             {
-                let bFlag = window.Application.PluginStorage.getItem("ApiEventFlag")
-                let bRegister = bFlag ? false : true
-                window.Application.PluginStorage.setItem("ApiEventFlag", bRegister)
-                if (bRegister){
-                    window.Application.ApiEvent.AddApiEventListener('DocumentNew', OnNewDocumentApiEvent)
+                let tsId = window.Application.PluginStorage.getItem("materialpane_id")
+                if (!tsId) {
+                    let tskpane = window.Application.CreateTaskPane(GetUrlPath() + "/ui/materialpane.html")
+                    let id = tskpane.ID
+                    window.Application.PluginStorage.setItem("materialpane_id", id)
+                    tskpane.Visible = true
+                    window.Application.PluginStorage.setItem("MaterialPaneFlag", true)
+                } else {
+                    let tskpane = window.Application.GetTaskPane(tsId)
+                    tskpane.Visible = !tskpane.Visible
+                    window.Application.PluginStorage.setItem("MaterialPaneFlag", tskpane.Visible)
                 }
-                else{
-                    window.Application.ApiEvent.RemoveApiEventListener('DocumentNew', OnNewDocumentApiEvent)
-                }
-
-                window.Application.ribbonUI.InvalidateControl("btnApiEvent") 
+                break
             }
-            break
-        case "btnWebNotify":
-            {
-                let currentTime = new Date()
-                let timeStr = currentTime.getHours() + ':' + currentTime.getMinutes() + ":" + currentTime.getSeconds()
-                window.Application.OAAssist.WebNotify("这行内容由wps加载项主动送达给业务系统，可以任意自定义, 比如时间值:" + timeStr + "，次数：" + (++WebNotifycount), true)
-            }
-            break
         default:
             break
     }
     return true
 }
+
 
 function GetImage(control) {
     const eleId = control.Id
     switch (eleId) {
-        case "btnShowMsg":
-            return "images/1.svg"
-        case "btnShowDialog":
-            return "images/2.svg"
-        case "btnShowTaskPane":
-            return "images/3.svg"
+        case "btnShowAIPane":
+            // AI对话功能 - 使用聊天对话图标（chat_v2.svg）
+            // 图标含义：对话交流、AI聊天，完美匹配AI对话功能
+            return "images/chat_v2.svg"
+        case "btnShowMaterialPane":
+            // 素材库功能 - 使用创意灯泡图标（idea.svg）
+            // 图标含义：创意灵感、素材收集，完美匹配素材库功能
+            return "images/idea.svg"
         default:
-            ;
+            // 默认图标 - 新建模板图标
+            return "images/newFromTemp.svg"
     }
-    return "images/newFromTemp.svg"
 }
 
+
 function OnGetEnabled(control) {
-    const eleId = control.Id
-    switch (eleId) {
-        case "btnShowMsg":
-            return true
-            break
-        case "btnShowDialog":
-            {
-                let bFlag = window.Application.PluginStorage.getItem("EnableFlag")
-                return bFlag
-                break
-            }
-        case "btnShowTaskPane":
-            {
-                let bFlag = window.Application.PluginStorage.getItem("EnableFlag")
-                return bFlag
-                break
-            }
-        default:
-            break
-    }
     return true
 }
+
 
 function OnGetVisible(control){
     return true
 }
 
-function OnGetLabel(control){
-    const eleId = control.Id
-    switch (eleId) {
-        case "btnIsEnbable":
-        {
-            let bFlag = window.Application.PluginStorage.getItem("EnableFlag")
-            return bFlag ?  "按钮Disable" : "按钮Enable"
-            break
-        }
-        case "btnApiEvent":
-        {
-            let bFlag = window.Application.PluginStorage.getItem("ApiEventFlag")
-            return bFlag ? "清除新建文件事件" : "注册新建文件事件"
-            break
-        }    
-    }
-    return ""
-}
-
-function OnNewDocumentApiEvent(doc){
-    alert("新建文件事件响应，取文件名: " + doc.Name)
-}
