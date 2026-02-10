@@ -1,0 +1,12 @@
+<customUI xmlns="http://schemas.microsoft.com/office/2006/01/customui" onLoad="OnAddinLoad">
+    <ribbon startFromScratch="false">
+        <tabs>
+            <tab id="wpsAddinTab" label="AI Pilot">
+                <group id="btnAIGroup" label="AI工具">
+                    <button id="btnShowAIPane" label="AI助理" onAction="OnAction" getEnabled="OnGetEnabled" getImage="GetImage" visible="true" size="large"/>
+                    <button id="btnShowMaterialPane" label="素材库" onAction="OnAction" getEnabled="OnGetEnabled" getImage="GetImage" visible="true" size="large"/>
+                </group>
+            </tab>
+        </tabs>
+    </ribbon>
+</customUI>
