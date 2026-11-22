@@ -58,12 +58,14 @@ PowerShell -ExecutionPolicy Bypass -File .\install.ps1
 ## 本地开发
 
 ```powershell
-npm install
+git clone https://github.com/ttbr5145/wps-word-ai-pilot.git
+cd wps-word-ai-pilot
+npm install      # node_modules 已不入库，必须本地装
 npm run dev      # Vite 起在 http://localhost:3889
 npm run build    # 产物进 dist/
 ```
 
-调试时把 `manifest.xml` 的 `SourceLocation` 指向本地服务地址即可（与 `npm run dev` 端口保持一致，默认 3889）。
+调试时把 `manifest.xml` 的 `SourceLocation` 指向本地服务地址即可，仓库内的清单已默认写成 `http://localhost:3889/index.html`。
 
 ## 项目结构
 
@@ -87,13 +89,13 @@ npm run build    # 产物进 dist/
 ├─ vite.config.js          # 构建时把 manifest/js/ui/images 复制到 dist
 ├─ sign-manifest.ps1       # 用 PFX 为 manifest.xml 加 XML 签名
 ├─ wps-gift-installer.nsi  # NSIS 安装包脚本
-└─ build_and_sign_temp.ps1 # 一键：签清单 → 导出证书 → 打包 exe
+└─ build_and_sign_temp.ps1 # 一键：签清单 → 导出证书 → 打包 exe（证书密码运行时输入，不入库）
 ```
 
 ## 常见问题
 
 **侧边栏打开是空白？**
-多半是 `manifest.xml` 里的 `SourceLocation` 打不开。开发态确认 Vite 已启动且端口一致（默认 3889，仓库内 dist 清单写的是 3890，按实际端口改）；分发给别人时改成可访问的部署地址。
+多半是 `manifest.xml` 里的 `SourceLocation` 打不开。开发态确认 Vite 已启动且端口一致（默认 3889）；分发给别人时改成可访问的部署地址。
 
 **API 调用报错？**
 依次查：Key 是否填对、账户额度是否还有、网络能否直连 `api.chatanywhere.tech`。错误信息会直接显示在对话气泡里。
@@ -107,7 +109,7 @@ npm run build    # 产物进 dist/
 ## 安全提示
 
 - 本仓库 **不内置任何可用的 API Key**。请在设置里填自己的 Key，不要把 Key 提交回仓库。
-- 仓库历史上出现过示例 Key 与自签名证书私钥（`temp.pfx`），已加入 `.gitignore`；如需正式分发，请自行生成证书并妥善保管私钥。
+- 仓库历史上出现过示例 Key 与自签名证书私钥（`temp.pfx`）。二者均已从当前版本移除并加入 `.gitignore`，但它们仍存在于 Git 历史中，请自行作废/轮换。
 - 加载项申请的是 `ReadWriteDocument` 权限，即可以读写当前文档内容，请只在信任来源安装。
 
 ## 许可证

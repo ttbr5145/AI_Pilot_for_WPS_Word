@@ -16,10 +16,13 @@
 - 清单签名脚本 `sign-manifest.ps1`，避免 WPS 加载时的安全提示。
 
 ### 变更
-- 移除 `js/ai-config.js` 中硬编码的示例 API Key，改为留空并在侧边栏设置中填写；历史上暴露过的 Key 请自行作废。
-- 新增 `LICENSE`（MIT）、`.gitignore`，重写本文件与 README。
+- 移除 `js/ai-config.js` 中硬编码的示例 API Key，改为留空并在侧边栏设置中填写。
+- 移除自签名证书私钥 `temp.pfx`，构建脚本改为运行时输入密码，不再硬编码 `P@ssw0rd!`。
+- `node_modules/` 退出版本控制（保留 `package-lock.json`），仓库体积从 ~21 MB 降至源码级。
+- 修正 `manifest.xml` / `dist/manifest.xml` 的 `SourceLocation` 端口（3890 → 3889），与 `npm run dev` 一致；同时修复 `dist/manifest.xml` 中被重复编码的中文描述。
+- 新增 `LICENSE`（MIT）、`.gitignore`、本文件，重写 README。
 
 ### 已知问题
-- `dist/manifest.xml` 的 `SourceLocation` 指向 `http://localhost:3890`，与开发端口 `3889` 不一致，直接加载 dist 包可能显示空白侧边栏，需按实际部署地址修改。
-- 仓库历史上提交过示例 API Key 与自签名证书私钥（`temp.pfx`），请勿沿用，正式发布前应替换为自己的凭据。
-- v1.0.0 的发布附件为修复前构建，其中仍含早期示例 Key，建议使用源码自行构建，或在下个版本重建附件。
+- `dist/manifest.xml` 在本地重新签名前仍指向开发地址，正式分发需改为部署地址并重新签名。
+- v1.0.0 的 Release 附件为清理前的构建产物，其压缩包内 `js/ai-config.js` 仍含早期示例 Key、`manifest.xml` 仍为旧端口，建议使用源码重新构建或在下个版本重建附件。
+- 仓库历史中仍存在已作废的示例 Key 与证书私钥，不再随当前版本分发。
