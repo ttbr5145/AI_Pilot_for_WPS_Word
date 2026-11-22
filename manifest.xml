@@ -6,7 +6,7 @@
   <EntryPoints>
     <EntryPoint>
       <Type>TaskPaneApp</Type>
-      <SourceLocation>http://localhost:3890/index.html</SourceLocation>
+      <SourceLocation>http://localhost:3889/index.html</SourceLocation>
     </EntryPoint>
   </EntryPoints>
   <Permissions>ReadWriteDocument</Permissions>
