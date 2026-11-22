@@ -1,11 +1,12 @@
 // AI配置文件
 
 // ChatAnywhere API配置
+// 不要把真实 API Key 提交到仓库：可直接在侧边栏“设置”里填写，或临时写入下方 apiKey 字段。
+// Key 申请地址：https://chatanywhere.tech
 const AI_CONFIG = {
     provider: 'chatanywhere',
     chatanywhere: {
-        // apiKey: 'sk-dc45668c412f4f15b6a68e5321e60371', // DeepSeek API Key
-        apiKey: 'sk-R1tghSidlCjMxKBXfA7jsKeNlSOvBz6sNrSfDjw8xEdaFrTU', // ChatAnywhere API Key
+        apiKey: '', // 在此填入自己的 ChatAnywhere API Key
         baseURL: 'https://api.chatanywhere.tech/v1',
         model: 'gpt-5.1-2025-11-13',
         temperature: 0.7,
@@ -23,7 +24,7 @@ const AVAILABLE_MODELS = [
     { id: 'gemini-2.5-pro', name: 'Gemini 2.5 Pro(0次/日)' },
     { id: 'grok-4', name: 'Grok 4(0次/日)' },
     { id: 'qwen3-max-2026-01-23', name: 'Qwen3 Max 2026-01-23(0次/日)' },
-    { id: 'kimi-k2.5', name: 'Kimi K2.5(0次/日)' },
+    { id: 'kimi-k2.5', name: 'Kimi K2.5(0次/日)' }
 ];
 // 系统提示词
 const SYSTEM_PROMPTS = {
