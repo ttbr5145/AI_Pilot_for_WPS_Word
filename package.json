@@ -1,15 +1,15 @@
 {
-	"name": "AI_Pilot_for_WPS_Word",
+	"name": "wps-word-ai-pilot",
 	"addonType": "wps",
 	"version": "1.0.0",
+	"description": "WPS 文字加载项：AI 对话助手 + 素材库，支持一键插入正文",
 	"scripts": {
 		"dev": "vite --port 3889",
 		"build": "vite build",
 		"preview": "vite preview",
 		"lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore",
-		"format": "prettier --write src/"
+		"format": "prettier --write js/ ui/"
 	},
-	"description": "wps加载项示例, 执行npm install后，提供代码联想功能",
 	"devDependencies": {
 		"wps-jsapi-declare": "latest",
 		"vite": "^5.3.1",

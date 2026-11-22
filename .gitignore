@@ -1,0 +1,21 @@
+# 依赖
+node_modules/
+
+# 签名材料（不要提交私钥）
+*.pfx
+*.p12
+*.cer
+*.bak
+
+# 构建产物
+*.zip
+*.exe
+wps-gift-installer.exe
+dist/manifest.xml.bak
+
+# 系统与编辑器
+.DS_Store
+Thumbs.db
+*.log
+.vscode/
+.idea/

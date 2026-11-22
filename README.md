@@ -1,128 +1,115 @@
-# AI Pilot for WPS Word
+# WPS Word AI Pilot
 
-一个集成AI功能的WPS Word加载项，提供AI对话助手和素材库功能。
+> 给 WPS 文字装一个 AI 助手：右边栏聊两句，结果一键插进正文。
 
-## 功能特性
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Release](https://img.shields.io/github/v/release/ttbr5145/wps-word-ai-pilot?display_name=tag&sort=semver)](https://github.com/ttbr5145/wps-word-ai-pilot/releases)
+[![Platform](https://img.shields.io/badge/Platform-WPS%20Office%20%7C%20Windows-lightgrey.svg)]()
+[![Stack](https://img.shields.io/badge/Stack-JavaScript%20%2B%20Vite-yellow.svg)]()
+[![Status](https://img.shields.io/badge/Status-MVP-orange.svg)](CHANGELOG.md)
 
-### 🤖 AI对话助手
-- 集成ChatAnywhere API (OpenAI兼容格式)
-- 实时对话交互
-- 多种预设提示词（写作助手、编辑助手、翻译助手、摘要助手）
-- 自定义系统提示词
-- 一键保存AI回复到素材库
-- 一键插入内容到WPS文档
-- 对话历史管理
+WPS Word AI Pilot 是一个运行在 **WPS 文字** 里的 JS 加载项（TaskPane 类型）。它在功能区多出一个 `AI Pilot` 选项卡，点开就是两个侧边栏：一个用来和 AI 对话，一个用来攒写作素材，两条链路都能把文字直接写进当前文档，不用来回复制粘贴。
 
-### 📚 素材库
-- 快速添加、编辑、删除素材
-- 一键插入素材到WPS文档
-- 复制素材到剪贴板
-- 数据持久化存储（localStorage + PluginStorage）
-- 无弹窗操作，简洁高效
+> 仓库原名 `AI_Pilot_for_WPS_Word`，已更名为 `wps-word-ai-pilot`，旧链接会自动跳转。
 
-## 安装使用
+## 功能
 
-### 1. 安装依赖
-```bash
+**AI 对话助手**
+
+- 接入 ChatAnywhere 的 OpenAI 兼容接口，一把 API Key 就能用。
+- 9 个可选模型：GPT-5 Nano / GPT-5 Mini / GPT-5.1 / DeepSeek R1 / Claude Opus 4.5 / Gemini 2.5 Pro / Grok 4 / Qwen3 Max / Kimi K2.5。
+- 5 套内置系统提示词：默认助手、写作、编辑、翻译、摘要，另可自定义。
+- 回复下方两个按钮：`保存到素材库`、`插入文档`（写入当前选区，无选区则写入文首）。
+- 多轮上下文保留在本会话内，可一键清空。
+
+**素材库**
+
+- 素材的新增、编辑、删除、复制、插入文档，全部操作即点即生效，不弹确认框。
+- 数据同时落 `localStorage` 和 WPS `PluginStorage`，换机器/重开 WPS 都能读回。
+- AI 回复可以一键沉淀成素材，写作时反复取用。
+
+## 安装
+
+**方式一：安装包（推荐给普通用户）**
+
+1. 从 [Releases](https://github.com/ttbr5145/wps-word-ai-pilot/releases) 下载 `wps-gift-installer.exe`。
+2. 双击运行，默认装到 `%LOCALAPPDATA%\WPSAddins\AI_Pilot_for_WPS_Word`。
+3. 打开 WPS 文字 → 工具 → 加载项 → XML 扩展包，选择安装目录下的 `manifest.xml` 加载。
+
+**方式二：脚本安装**
+
+```powershell
+# 解压 wps-gift.zip 后，在解压目录执行
+PowerShell -ExecutionPolicy Bypass -File .\install.ps1
+```
+
+脚本会复制文件、生成自签名证书并导入当前用户的「受信任根证书」，然后自动打开 `manifest.xml` 所在目录。卸载用 `uninstall.ps1`。
+
+> 自签名证书仅适合开发与内部分发；对外发布请购买代码签名证书重新签名 `manifest.xml`。
+
+## 配置 API Key
+
+1. 到 [chatanywhere.tech](https://chatanywhere.tech) 申请 Key。
+2. WPS 里点功能区 `AI Pilot` → `AI 助理` 打开侧边栏，点右上角 ⚙。
+3. 填入 API Key，选模型、选提示词，保存。
+
+默认接口地址 `https://api.chatanywhere.tech/v1`，也可在 `js/ai-config.js` 里改成任何 OpenAI 兼容服务（DeepSeek、自建网关等）。
+
+## 本地开发
+
+```powershell
 npm install
+npm run dev      # Vite 起在 http://localhost:3889
+npm run build    # 产物进 dist/
 ```
 
-### 2. 配置AI API
-1. 启动WPS并打开加载项
-2. 点击"AI对话"按钮打开侧边栏
-3. 点击右上角设置图标⚙
-4. 输入DeepSeek API Key
-5. 选择或自定义系统提示词
-
-### 3. 运行开发环境
-```bash
-npm run dev
-```
-访问 http://localhost:3889
-
-### 4. 获取ChatAnywhere API Key
-访问 https://chatanywhere.tech 获取API Key
-
-### 5. 构建生产版本
-```bash
-npm run build
-```
-
-## ChatAnywhere API配置
-
-获取API Key：https://chatanywhere.tech/
-
-```
-API Key: sk-xxxxxxxxxxxxx
-BaseURL: https://api.chatanywhere.tech/v1
-模型: gpt-5.1-2025-11-13 (默认，可切换)
-```
-
-### 可用模型
-
-支持以下模型切换：
-- GPT-5.1 (2025-11-13) - 最新GPT模型
-- DeepSeek R1 (250528) - DeepSeek最新模型
-- Claude Opus 4.5 - Anthropic最强模型
-- Gemini 2.5 Pro - Google最新模型
-- Grok 4 - xAI模型
-- Qwen3 Max (2026-01-23) - 通义千问最新
-- Kimi K2.5 - 月之暗面最新模型
-
-## 快捷键
-
-### AI对话面板
-- `Enter`: 发送消息
-- `Shift + Enter`: 换行
-- `ESC`: 关闭设置对话框
-
-### 素材库面板
-无快捷键，使用按钮操作
+调试时把 `manifest.xml` 的 `SourceLocation` 指向本地服务地址即可（与 `npm run dev` 端口保持一致，默认 3889）。
 
 ## 项目结构
 
 ```
-├── js/
-│   ├── aipane.js          # AI对话面板逻辑
-│   ├── ai-config.js       # DeepSeek AI配置管理
-│   ├── materialpane.js    # 素材库面板逻辑
-│   ├── ribbon.js          # 功能区按钮事件处理
-│   ├── util.js            # 工具函数
-│   └── ...
-├── ui/
-│   ├── aipane.html        # AI对话界面
-│   ├── materialpane.html  # 素材库界面
-│   └── ...
-├── manifest.xml           # 加载项清单
-├── ribbon.xml             # 功能区UI定义
-└── ...
+├─ index.html              # 加载项入口，WPS 启动时加载
+├─ main.js                 # 启动脚本
+├─ manifest.xml            # 加载项清单（名称、入口、权限）
+├─ ribbon.xml              # 功能区定义：AI 助理 / 素材库 两个按钮
+├─ js/
+│  ├─ ai-config.js         # 接口地址、模型列表、系统提示词
+│  ├─ aipane.js            # AI 对话面板：发消息、调接口、插入文档
+│  ├─ materialpane.js      # 素材库面板：增删改查、复制、插入
+│  ├─ ribbon.js            # 功能区按钮事件、侧边栏显示隐藏
+│  └─ dialog.js / taskpane.js / util.js / systemdemo.js
+├─ ui/
+│  ├─ aipane.html          # AI 对话界面
+│  ├─ materialpane.html    # 素材库界面
+│  └─ dialog.html / taskpane.html
+├─ images/                 # 功能区 SVG 图标
+├─ dist/                   # 构建与安装产物（含 install/uninstall 脚本、签名后的清单）
+├─ vite.config.js          # 构建时把 manifest/js/ui/images 复制到 dist
+├─ sign-manifest.ps1       # 用 PFX 为 manifest.xml 加 XML 签名
+├─ wps-gift-installer.nsi  # NSIS 安装包脚本
+└─ build_and_sign_temp.ps1 # 一键：签清单 → 导出证书 → 打包 exe
 ```
 
 ## 常见问题
 
-### Q: API调用失败怎么办？
-A: 请检查：
-1. API Key是否正确
-2. API额度是否充足
-3. 网络连接是否正常
+**侧边栏打开是空白？**
+多半是 `manifest.xml` 里的 `SourceLocation` 打不开。开发态确认 Vite 已启动且端口一致（默认 3889，仓库内 dist 清单写的是 3890，按实际端口改）；分发给别人时改成可访问的部署地址。
 
-### Q: 数据存储在哪里？
-A: 在WPS环境中使用PluginStorage，开发环境使用localStorage。
+**API 调用报错？**
+依次查：Key 是否填对、账户额度是否还有、网络能否直连 `api.chatanywhere.tech`。错误信息会直接显示在对话气泡里。
 
-### Q: 素材库操作没有提示吗？
-A: 是的，为保持简洁高效，素材库的所有操作（添加、删除、插入、复制）均无弹窗提示。
+**数据存在哪？**
+素材在 `localStorage` 与 `PluginStorage` 的 `materials` 键；配置在 `ai_config`、`ai_provider` 键。两者都只在本机，不上传。
 
-## 开发说明
+**为什么素材操作没有任何提示？**
+刻意设计——素材是高频轻操作，弹窗提示会打断写作节奏。
 
-### 主要文件说明
+## 安全提示
 
-- `js/ai-config.js`: DeepSeek AI API配置管理
-- `js/aipane.js`: AI对话核心逻辑，处理消息收发、API调用
-- `js/materialpane.js`: 素材库核心逻辑，处理素材的增删改查
-- `js/ribbon.js`: 功能区按钮事件，控制侧边栏显示/隐藏
-- `ui/aipane.html`: AI对话界面UI（简洁WPS风格）
-- `ui/materialpane.html`: 素材库界面UI（简洁WPS风格）
+- 本仓库 **不内置任何可用的 API Key**。请在设置里填自己的 Key，不要把 Key 提交回仓库。
+- 仓库历史上出现过示例 Key 与自签名证书私钥（`temp.pfx`），已加入 `.gitignore`；如需正式分发，请自行生成证书并妥善保管私钥。
+- 加载项申请的是 `ReadWriteDocument` 权限，即可以读写当前文档内容，请只在信任来源安装。
 
 ## 许可证
 
-MIT License
+[MIT](LICENSE) © 2026 吴桐 (ttbr5145)
