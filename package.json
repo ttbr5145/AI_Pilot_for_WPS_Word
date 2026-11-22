@@ -1,7 +1,7 @@
 {
 	"name": "wps-word-ai-pilot",
 	"addonType": "wps",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"description": "WPS 文字加载项：AI 对话助手 + 素材库，支持一键插入正文",
 	"scripts": {
 		"dev": "vite --port 3889",

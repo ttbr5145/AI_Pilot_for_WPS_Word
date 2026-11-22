@@ -2,6 +2,19 @@
 
 本项目遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
+## v1.0.1 — 2026-11-22
+
+重新构建的干净发布版，功能与 v1.0.0 一致，仅修构建产物与仓库卫生。
+
+### 修复
+- 重新打包所有发布附件：安装包内的 `js/ai-config.js` 不再携带早期示例 API Key。
+- 安装包内 `manifest.xml` 的 `SourceLocation` 由 3890 改为 3889，与 `npm run dev` 一致；并修复其被二次编码的中文描述。
+- `dist/README_INSTALL.md` 重写为可读中文，补充“填入自己的 API Key”步骤。
+- `build_and_sign_temp.ps1` 不再硬编码证书密码，改为运行时输入。
+
+### 变更
+- 版本号升至 1.0.1；`node_modules/` 与 `temp.pfx` 不再入库（见 v1.0.0 条目）。
+
 ## v1.0.0 — 2026-02-10
 
 首个可用版本（MVP）。
@@ -17,12 +30,10 @@
 
 ### 变更
 - 移除 `js/ai-config.js` 中硬编码的示例 API Key，改为留空并在侧边栏设置中填写。
-- 移除自签名证书私钥 `temp.pfx`，构建脚本改为运行时输入密码，不再硬编码 `P@ssw0rd!`。
+- 移除自签名证书私钥 `temp.pfx`，构建脚本改为运行时输入密码。
 - `node_modules/` 退出版本控制（保留 `package-lock.json`），仓库体积从 ~21 MB 降至源码级。
-- 修正 `manifest.xml` / `dist/manifest.xml` 的 `SourceLocation` 端口（3890 → 3889），与 `npm run dev` 一致；同时修复 `dist/manifest.xml` 中被重复编码的中文描述。
+- 修正 `manifest.xml` / `dist/manifest.xml` 的 `SourceLocation` 端口（3890 → 3889）。
 - 新增 `LICENSE`（MIT）、`.gitignore`、本文件，重写 README。
 
 ### 已知问题
-- `dist/manifest.xml` 在本地重新签名前仍指向开发地址，正式分发需改为部署地址并重新签名。
-- v1.0.0 的 Release 附件为清理前的构建产物，其压缩包内 `js/ai-config.js` 仍含早期示例 Key、`manifest.xml` 仍为旧端口，建议使用源码重新构建或在下个版本重建附件。
-- 仓库历史中仍存在已作废的示例 Key 与证书私钥，不再随当前版本分发。
+- 仓库历史中仍存在已作废的示例 Key 与证书私钥，不再随当前版本分发；如需彻底清除需重写 Git 历史。
